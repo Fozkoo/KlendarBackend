@@ -33,4 +33,12 @@ public class eventController {
         return eventService.getEventsByUserId(userId);
     }
 
+    @CrossOrigin
+    @GetMapping("/getAllInfoEvents")
+    public ResponseEntity<?> getAllInfoEvents(){
+        List<Event> events = eventService.getAllEvents();
+        return ResponseEntity.ok(events);
+    }
+
+
 }
