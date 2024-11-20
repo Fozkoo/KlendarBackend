@@ -34,4 +34,9 @@ public class eventController {
         return ResponseEntity.ok(events);
     }
 
+    @CrossOrigin
+    @GetMapping("/getAllEventByIdUser/{idUser}")
+    public ResponseEntity<?> getEventById(@PathVariable String idUser){
+        return ResponseEntity.ok(eventRepository.getEventsByUserId(idUser));
+    }
 }
