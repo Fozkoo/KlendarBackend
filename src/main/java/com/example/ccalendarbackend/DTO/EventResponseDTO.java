@@ -11,8 +11,6 @@ public class EventResponseDTO {
     private String eventTime;
     private String eventDay;
     private String eventUser;
-    private List<Long> attachmentIds;
-    private List<String> attachmentUrls;
-    private List<Long> notificationIds;
-    private List<String> notificationTypes;
+    private List<AttachmentDTO> attachments;
+    private List<NotificationDTO> notifications;
 }
