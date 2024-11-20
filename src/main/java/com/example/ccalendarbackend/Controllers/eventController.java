@@ -40,6 +40,4 @@ public class eventController {
         List<EventResponseDTO> events = eventService.getAllEvents();
         return ResponseEntity.ok(events);
     }
-
-
 }
