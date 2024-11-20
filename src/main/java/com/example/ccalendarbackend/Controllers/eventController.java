@@ -1,6 +1,7 @@
 package com.example.ccalendarbackend.Controllers;
 
 
+import com.example.ccalendarbackend.DTO.EventResponseDTO;
 import com.example.ccalendarbackend.Models.Event;
 import com.example.ccalendarbackend.Repository.EventRepository;
 import com.example.ccalendarbackend.Services.EventService;
@@ -36,7 +37,7 @@ public class eventController {
     @CrossOrigin
     @GetMapping("/getAllInfoEvents")
     public ResponseEntity<?> getAllInfoEvents(){
-        List<Event> events = eventService.getAllEvents();
+        List<EventResponseDTO> events = eventService.getAllEvents();
         return ResponseEntity.ok(events);
     }
 
