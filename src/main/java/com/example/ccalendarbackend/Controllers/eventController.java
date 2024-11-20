@@ -28,7 +28,7 @@ public class eventController {
     }
 
     @CrossOrigin
-    @GetMapping("/user/{idUser}")
+    @GetMapping("/user/{idUser}")//New endpoint
     public ResponseEntity<List<EventResponseDTO>> getAllEventsByUser(@PathVariable String idUser) {
         List<EventResponseDTO> events = eventService.getAllEventsByIdUser(idUser);
         return ResponseEntity.ok(events);
