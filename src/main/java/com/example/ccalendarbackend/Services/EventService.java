@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,5 +94,39 @@ public class EventService {
         events.addAll(eventMap.values());
         return events;
     }
+
+    /////////////////////////////////////
+
+    public ResponseEntity<?> createEventWithDetails(String title, LocalTime hora, LocalDate day, String idUser, String url, int notificationId) {
+
+        if (notificationId < 1 || notificationId > 3) {
+            return ResponseEntity.badRequest().body("El notificationId debe ser 1, 2 o 3.");
+        }
+
+        eventRepository.insertEvent(title, hora, day, idUser);
+        int eventId = eventRepository.getLastInsertedEventId();
+
+        eventRepository.insertAttachment(url);
+        int attachmentId = eventRepository.getLastInsertedAttachmentId();
+
+        eventRepository.insertEventAttachmentLink(eventId, attachmentId);
+
+
+        eventRepository.insertEventNotificationLink(eventId, notificationId);
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("eventId", eventId);
+        response.put("eventTitle", title);
+        response.put("eventTime", hora);
+        response.put("eventDay", day);
+        response.put("idUser", idUser);
+        response.put("attachmentUrl", url);
+        response.put("notificationId", notificationId);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }

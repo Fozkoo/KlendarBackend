@@ -1,4 +1,5 @@
 package com.example.ccalendarbackend.Controllers;
+import com.example.ccalendarbackend.DTO.EventRequestDTO;
 import com.example.ccalendarbackend.DTO.EventResponseDTO;
 import com.example.ccalendarbackend.Models.Event;
 import com.example.ccalendarbackend.Repository.EventRepository;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -28,15 +31,44 @@ public class eventController {
     }
 
     @CrossOrigin
-    @GetMapping("/user/{idUser}")//New endpoint
+    @GetMapping("/getAllEventByIdUser/{idUser}")//New endpoint
     public ResponseEntity<List<EventResponseDTO>> getAllEventsByUser(@PathVariable String idUser) {
         List<EventResponseDTO> events = eventService.getAllEventsByIdUser(idUser);
         return ResponseEntity.ok(events);
     }
 
+
     @CrossOrigin
-    @GetMapping("/getAllEventByIdUser/{idUser}")
-    public ResponseEntity<?> getEventById(@PathVariable String idUser){
-        return ResponseEntity.ok(eventRepository.getEventsByUserId(idUser));
+    @PostMapping("/createEvent")
+    public ResponseEntity<?> createEvent(@RequestBody EventRequestDTO eventRequest) {
+        LocalTime parsedHora = LocalTime.parse(eventRequest.getEventTime());
+        LocalDate parsedDay = LocalDate.parse(eventRequest.getEventDate());
+        return eventService.createEventWithDetails(
+                eventRequest.getEventTitle(),
+                parsedHora,
+                parsedDay,
+                eventRequest.getIdUser(),
+                eventRequest.getUrlAttachment(),
+                eventRequest.getNotificationId()
+        );
     }
+
+    /*
+
+    public ResponseEntity<?> modifyEventById(){
+    }
+
+
+    public ResponseEntity<?> deleteEventById(){
+
+    }
+
+
+
+
+     */
+
+
+
+
 }
