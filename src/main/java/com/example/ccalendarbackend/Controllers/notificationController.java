@@ -30,6 +30,7 @@ public class notificationController {
     public ResponseEntity<List<Notification>> getAllNotifications() {
         return ResponseEntity.ok(notificationRepository.findAll());
     }
+    //New endpoint
     @PostMapping
     public ResponseEntity<?> createNotification (@RequestBody Notification notificationDTO) {
         Notification notification = notificationService.createNotification(notificationDTO);

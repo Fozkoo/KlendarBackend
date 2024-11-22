@@ -10,7 +10,7 @@ public class NotificationService {
 
     @Autowired
     private NotificationRepository notificationRepository;
-
+//New method
     public Notification createNotification(Notification notificationDTO) {
         Notification notification = new Notification();
         notification.setId(notificationDTO.getId()!= null ? notificationDTO.getId().intValue() : null);
