@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-11-2024 a las 20:38:33
--- Versión del servidor: 8.0.39
+-- Tiempo de generación: 23-11-2024 a las 19:38:09
+-- Versión del servidor: 10.10.2-MariaDB
 -- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,19 +28,17 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `attachments` (
-  `idattachments` int NOT NULL,
+  `idattachments` int(11) NOT NULL,
   `url` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `attachments`
 --
 
 INSERT INTO `attachments` (`idattachments`, `url`) VALUES
-(1, 'www.google.com'),
-(2, 'www.youtube.com'),
-(10, 'https://ejemplo.com/archivo.pdf'),
-(11, 'https://ejempdf');
+(12, 'https://example.com/attachment2'),
+(15, 'https://example.com/attachment5');
 
 -- --------------------------------------------------------
 
@@ -49,22 +47,20 @@ INSERT INTO `attachments` (`idattachments`, `url`) VALUES
 --
 
 CREATE TABLE `event` (
-  `idevent` int NOT NULL,
+  `idevent` int(11) NOT NULL,
   `title` varchar(45) NOT NULL,
   `hora` time NOT NULL,
   `day` date NOT NULL,
   `iduser` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `event`
 --
 
 INSERT INTO `event` (`idevent`, `title`, `hora`, `day`, `iduser`) VALUES
-(1, 'jugar fulbo', '00:00:00', '2024-11-04', 'aaaaaa44444'),
-(3, 'CLASES', '21:58:43', '2024-11-05', 'asdasdasd312'),
-(18, 'Mi nuevo evento', '10:00:00', '2024-11-20', 'tiziano10'),
-(19, '', '11:00:00', '2024-11-23', 'tiziano10');
+(14, 'Lanzamiento de producto', '09:30:00', '2024-12-01', 'user456'),
+(17, 'Cena de gala', '20:00:00', '2024-12-05', 'user654');
 
 -- --------------------------------------------------------
 
@@ -73,17 +69,17 @@ INSERT INTO `event` (`idevent`, `title`, `hora`, `day`, `iduser`) VALUES
 --
 
 CREATE TABLE `event_has_attachments` (
-  `event_idevent` int NOT NULL,
-  `attachments_idattachments` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `event_idevent` int(11) NOT NULL,
+  `attachments_idattachments` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `event_has_attachments`
 --
 
 INSERT INTO `event_has_attachments` (`event_idevent`, `attachments_idattachments`) VALUES
-(18, 10),
-(19, 11);
+(14, 12),
+(17, 15);
 
 -- --------------------------------------------------------
 
@@ -92,17 +88,17 @@ INSERT INTO `event_has_attachments` (`event_idevent`, `attachments_idattachments
 --
 
 CREATE TABLE `event_has_notification` (
-  `event_idevent` int NOT NULL,
-  `notification_idnotification` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `event_idevent` int(11) NOT NULL,
+  `notification_idnotification` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `event_has_notification`
 --
 
 INSERT INTO `event_has_notification` (`event_idevent`, `notification_idnotification`) VALUES
-(18, 1),
-(19, 3);
+(14, 1),
+(17, 3);
 
 -- --------------------------------------------------------
 
@@ -111,9 +107,9 @@ INSERT INTO `event_has_notification` (`event_idevent`, `notification_idnotificat
 --
 
 CREATE TABLE `notification` (
-  `idnotification` int NOT NULL,
+  `idnotification` int(11) NOT NULL,
   `type` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `notification`
@@ -170,19 +166,19 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT de la tabla `attachments`
 --
 ALTER TABLE `attachments`
-  MODIFY `idattachments` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idattachments` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `event`
 --
 ALTER TABLE `event`
-  MODIFY `idevent` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idevent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `idnotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idnotification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -193,7 +189,7 @@ ALTER TABLE `notification`
 --
 ALTER TABLE `event_has_attachments`
   ADD CONSTRAINT `fk_event_has_attachments_attachments1` FOREIGN KEY (`attachments_idattachments`) REFERENCES `attachments` (`idattachments`),
-  ADD CONSTRAINT `fk_event_has_attachments_event1` FOREIGN KEY (`event_idevent`) REFERENCES `event` (`idevent`);
+  ADD CONSTRAINT `fk_event_has_attachments_event1` FOREIGN KEY (`event_idevent`) REFERENCES `event` (`idevent`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `event_has_notification`

@@ -5,11 +5,16 @@ import com.example.ccalendarbackend.DTO.EventResponseDTO;
 import com.example.ccalendarbackend.DTO.NotificationDTO;
 import com.example.ccalendarbackend.Helpers.DateTimeHelper;
 import com.example.ccalendarbackend.Models.Event;
+import com.example.ccalendarbackend.Repository.AttachmentRepository;
+import com.example.ccalendarbackend.Repository.EventHasAttachmentRepository;
+import com.example.ccalendarbackend.Repository.EventHasNotificationRepository;
 import com.example.ccalendarbackend.Repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,6 +28,14 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private EventHasAttachmentRepository eventHasAttachmentRepository;
+
+    @Autowired
+    private EventHasNotificationRepository eventHasNotificationRepository;
+    @Autowired
+    private AttachmentRepository attachmentRepository;
 
     public ResponseEntity<?> getAllEventsById(@PathVariable String idUser) {
         return ResponseEntity.ok(eventRepository.findEventsByUserId(idUser));
@@ -38,18 +51,18 @@ public class EventService {
      * poder tener una lista de attachments y de notificaciones en el
      * EventResponseDTO y
      * poder mostrar por separado los datos,
-     * 
+     *
      * Para manejar la conversion del Date y el TIME se creo un helper que se llama
      * DateTimeHelper
      * que maneja la logica por separado para que quede mejor visible el codigo.
      * pero no hace nada de otro mundo.
      * (lo intente hacer con una libreria externa pero pincho)
-     * 
+     *
      * y el la row 5,6,7,8 se maneja la logica para agregar los attachments y las
      * notificaciones
      * a la lista de attachments y notificaciones en los DTO correspondientes.
-     * 
-     * 
+     *
+     *
      * Y tambien cambie la consulta para que reciba el idUser
      */
 
@@ -127,6 +140,28 @@ public class EventService {
         return ResponseEntity.ok(response);
     }
 
+    /////////////////////////////////////////////////
 
+    @Transactional
+    public boolean deleteEventWithDependencies(Integer eventId) {
+        // Verificar si el evento existe
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return false;
+        }
+
+        // Eliminar registros en la tabla intermedia de attachments
+        eventHasAttachmentRepository.deleteByEventId(eventId);
+
+        // Eliminar registros en la tabla intermedia de notifications
+        eventHasNotificationRepository.deleteByEventId(eventId);
+
+        // Eliminar el evento
+        eventRepository.deleteById(eventId);
+
+        // Eliminar el attachment huerfano
+        attachmentRepository.deleteOrphanAttachments();
+        return true;
+    }
 
 }
