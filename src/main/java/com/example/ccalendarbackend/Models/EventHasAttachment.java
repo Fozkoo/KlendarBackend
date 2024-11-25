@@ -22,4 +22,7 @@ public class EventHasAttachment {
     @JoinColumn(name = "attachments_idattachments", nullable = false)
     private Attachment attachmentsIdattachments;
 
+    @Column(name = "url")
+    private String url;
+
 }

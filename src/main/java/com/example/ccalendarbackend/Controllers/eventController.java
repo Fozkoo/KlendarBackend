@@ -2,13 +2,16 @@ package com.example.ccalendarbackend.Controllers;
 
 import com.example.ccalendarbackend.DTO.EventRequestDTO;
 import com.example.ccalendarbackend.DTO.EventResponseDTO;
+import com.example.ccalendarbackend.DTO.EventUpdateRequest;
 import com.example.ccalendarbackend.Models.Event;
 import com.example.ccalendarbackend.Repository.EventRepository;
 import com.example.ccalendarbackend.Services.EventService;
+import com.sun.jdi.request.EventRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,9 +98,22 @@ public class eventController {
     }
 
 
-
-
      */
+
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<Void> updateEvent(@PathVariable Integer id,
+                                            @RequestBody EventUpdateRequest request) {
+        eventService.updateEventDetails(id, request.getTitle(), request.getHora(),
+                request.getDay(), request.getNotificationId(),
+                request.getNewUrl());
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
+
 
 
 }

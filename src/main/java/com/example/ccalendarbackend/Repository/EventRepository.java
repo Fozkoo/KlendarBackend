@@ -72,4 +72,19 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
 
 
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Event e SET e.title = :title, e.hora = :hora, e.day = :day WHERE e.id = :idevent")
+    void updateEventDetails(@Param("title") String title,
+                            @Param("hora") LocalTime hora,
+                            @Param("day") LocalDate day,
+                            @Param("idevent") Integer idevent);
+
+
+
+
+
+
+
 }

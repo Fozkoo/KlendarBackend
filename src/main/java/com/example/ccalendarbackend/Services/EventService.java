@@ -6,10 +6,11 @@ import com.example.ccalendarbackend.DTO.NotificationDTO;
 import com.example.ccalendarbackend.Helpers.DateTimeHelper;
 import com.example.ccalendarbackend.Models.Event;
 import com.example.ccalendarbackend.Repository.AttachmentRepository;
-import com.example.ccalendarbackend.Repository.EventHasAttachmentRepository;
+import com.example.ccalendarbackend.Repository.EventHasAttachmentsRepository;
 import com.example.ccalendarbackend.Repository.EventHasNotificationRepository;
 import com.example.ccalendarbackend.Repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-    private EventHasAttachmentRepository eventHasAttachmentRepository;
+    private EventHasAttachmentsRepository eventHasAttachmentsRepository;
 
     @Autowired
     private EventHasNotificationRepository eventHasNotificationRepository;
@@ -151,7 +152,7 @@ public class EventService {
         }
 
         // Eliminar registros en la tabla intermedia de attachments
-        eventHasAttachmentRepository.deleteByEventId(eventId);
+        eventHasAttachmentsRepository.deleteByEventId(eventId);
 
         // Eliminar registros en la tabla intermedia de notifications
         eventHasNotificationRepository.deleteByEventId(eventId);
@@ -163,5 +164,46 @@ public class EventService {
         attachmentRepository.deleteOrphanAttachments();
         return true;
     }
+
+
+
+
+
+
+    @Autowired
+    public EventService(EventRepository eventRepository,
+                        EventHasNotificationRepository eventHasNotificationRepository,
+                        EventHasAttachmentsRepository eventHasAttachmentsRepository) {
+        this.eventRepository = eventRepository;
+        this.eventHasNotificationRepository = eventHasNotificationRepository;
+        this.eventHasAttachmentsRepository = eventHasAttachmentsRepository;
+    }
+
+
+
+
+
+    @Transactional
+    public void updateEventDetails(Integer eventId, String title, LocalTime hora, LocalDate day,
+                                   Integer notificationId, String newUrl) {
+
+        eventRepository.updateEventDetails(title, hora, day, eventId);
+
+
+        eventHasNotificationRepository.updateEventNotification(notificationId, eventId);
+
+
+        attachmentRepository.updateAttachmentUrls(newUrl, eventId);
+
+    }
+
+
+
+
+
+
+
+
+
 
 }
