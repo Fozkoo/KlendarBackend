@@ -27,6 +27,7 @@ public class notificationController {
     @Autowired
     private NotificationService notificationService;
     @Operation(method = "GET", summary = "Get all notifications")
+    @CrossOrigin
     @GetMapping("/getAllNotifications")
     public ResponseEntity<List<Notification>> getAllNotifications() {
         return ResponseEntity.ok(notificationRepository.findAll());
