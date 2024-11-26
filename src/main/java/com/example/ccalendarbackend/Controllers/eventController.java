@@ -100,8 +100,8 @@ public class eventController {
 
      */
 
-
-    @PutMapping("update/{id}")
+    @CrossOrigin
+    @PutMapping("modifyEventById/{id}")
     public ResponseEntity<Void> updateEvent(@PathVariable Integer id,
                                             @RequestBody EventUpdateRequest request) {
         eventService.updateEventDetails(id, request.getTitle(), request.getHora(),
