@@ -16,6 +16,10 @@ public interface EventHasNotificationRepository extends JpaRepository<EventHasNo
     void deleteByEventId(@Param("eventId") Integer eventId);
 
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM EventHasNotification ehn WHERE ehn.notificationIdnotification.id = :notificationId")
+    void deleteByNotificationId(@Param("notificationId") Integer notificationId);
 
 
     @Modifying

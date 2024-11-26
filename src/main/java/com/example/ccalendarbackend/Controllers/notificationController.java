@@ -44,17 +44,19 @@ public class notificationController {
         return ResponseEntity.ok(notification);
     }
 
-    /*
-
-        @Operation(
-            summary = "Delete a notification by its ID",
-            description = "This endpoint deletes a notification by its unique ID from the system.")
-        @DeleteMapping("/deleteNotificationById")
-        public ResponseEntity<?> deleteNotificationById () {
-            return ResponseEntity.ok();
+    @Operation(method = "DELETE", summary = "Delete a notification by ID", description = "Deletes a notification and its references in the intermediate table.")
+    @CrossOrigin
+    @DeleteMapping("/deleteNotificationById/{id}")
+    public ResponseEntity<?> deleteNotificationById(@PathVariable Integer id) {
+        try {
+            notificationService.deleteNotificationById(id);
+            return ResponseEntity.ok("Notification deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting notification: " + e.getMessage());
         }
+    }
 
-    */
+
     @Operation(summary = "Modify a notification by its ID", description = "This endpoint modifies an existing notification by its unique ID.")
     @CrossOrigin
     @PutMapping("/modifyNotificationById/{id}")
