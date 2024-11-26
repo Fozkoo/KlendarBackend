@@ -5,6 +5,9 @@ import com.example.ccalendarbackend.Repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class NotificationService {
 
@@ -19,6 +22,17 @@ public class NotificationService {
 
     }
 
+    //Method to update notifications
+
+    public Notification modifyNotificationById(Integer id, Notification NotificationDTO) {
+        Optional<Notification> existingNotification = notificationRepository.findById(id);
+        if (existingNotification.isPresent()) {
+            Notification notification = existingNotification.get();
+            notification.setType(NotificationDTO.getType());
+            return notificationRepository.save(notification);
+        }
+        return null;
+    }
 
 
 
