@@ -38,7 +38,7 @@ public class notificationController {
 
     @Operation(method = "POST", summary = "Create a notification", description = "Creates a new notification in the system using the provided details. The request body must include the notification's attributes, such as type, message, or associated event. Returns the created notification upon success.")
     @CrossOrigin
-    @PostMapping
+    @PostMapping("/createNewNotification")
     public ResponseEntity<?> createNotification(@RequestBody Notification notificationDTO) {
         Notification notification = notificationService.createNotification(notificationDTO);
         return ResponseEntity.ok(notification);
