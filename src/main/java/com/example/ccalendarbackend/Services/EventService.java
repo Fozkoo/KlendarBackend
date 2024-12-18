@@ -113,10 +113,6 @@ public class EventService {
 
     public ResponseEntity<?> createEventWithDetails(String title, LocalTime hora, LocalDate day, String idUser, String url, int notificationId) {
 
-        if (notificationId < 1 || notificationId > 3) {
-            return ResponseEntity.badRequest().body("El notificationId debe ser 1, 2 o 3.");
-        }
-
         eventRepository.insertEvent(title, hora, day, idUser);
         int eventId = eventRepository.getLastInsertedEventId();
 
